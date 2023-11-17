@@ -1,6 +1,6 @@
 module github.com/aliyun/alibabacloud-bailian-go-sdk
 
-go 1.18
+go 1.15
 
 require (
 	github.com/alibabacloud-go/bailian-20230601 v1.1.0
