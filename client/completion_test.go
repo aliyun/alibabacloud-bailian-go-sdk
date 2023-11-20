@@ -52,8 +52,8 @@ func TestCreateCompletion(t *testing.T) {
 	}
 
 	if !response.Success {
-		t.Errorf("failed to create completion, requestId: %s, code: %s, message: %s\n", *response.RequestId,
-			*response.Code, *response.Message)
+		t.Errorf("failed to create completion, requestId: %s, code: %s, message: %s\n",
+			response.GetRequestId(), response.GetCode(), response.GetMessage())
 		return
 	}
 
@@ -90,10 +90,10 @@ func TestCreateStreamCompletion(t *testing.T) {
 
 	for result := range response {
 		if !result.Success {
-			t.Errorf("get result with error, requestId: %s, code: %s, message: %s\n", *result.RequestId,
-				*result.Code, *result.Message)
+			t.Errorf("get result with error, requestId: %s, code: %s, message: %s\n", result.GetRequestId(),
+				result.GetCode(), result.GetMessage())
 		} else {
-			t.Logf("requestId: %s, text: %s\n", *result.RequestId, *result.Data.Text)
+			t.Logf("requestId: %s, text: %s\n", result.GetRequestId(), result.GetData().GetText())
 		}
 	}
 }
@@ -185,12 +185,12 @@ func TestCreateCompletionWithParams(t *testing.T) {
 	}
 
 	if !response.Success {
-		t.Errorf("failed to create completion, requestId: %s, code: %s, message: %s\n", *response.RequestId,
-			*response.Code, *response.Message)
+		t.Errorf("failed to create completion, requestId: %s, code: %s, message: %s\n", response.GetRequestId(),
+			response.GetCode(), response.GetMessage())
 		return
 	}
 
-	t.Logf("requestId: %s, text: %s\n", *response.RequestId, *response.Data.Text)
+	t.Logf("requestId: %s, text: %s\n", response.GetRequestId(), response.GetData().GetText())
 }
 
 func TestCreateToken(t *testing.T) {

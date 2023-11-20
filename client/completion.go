@@ -50,6 +50,13 @@ type AccessTokenClient struct {
 	TokenData       *client.CreateTokenResponseBodyData
 }
 
+func ToString(v *string) string {
+	if v == nil {
+		return ""
+	}
+	return *v
+}
+
 func (c AccessTokenClient) String() string {
 	return tea.Prettify(c)
 }
@@ -63,9 +70,23 @@ func (c *AccessTokenClient) SetAccessKeyId(v string) *AccessTokenClient {
 	return c
 }
 
+func (c *AccessTokenClient) GetAccessKeyId() string {
+	if c.AccessKeyId == nil {
+		return ""
+	}
+	return *c.AccessKeyId
+}
+
 func (c *AccessTokenClient) SetAccessKeySecret(v string) *AccessTokenClient {
 	c.AccessKeySecret = &v
 	return c
+}
+
+func (c *AccessTokenClient) GetAccessKeySecret() string {
+	if c.AccessKeySecret == nil {
+		return ""
+	}
+	return *c.AccessKeySecret
 }
 
 func (c *AccessTokenClient) SetAgentKey(v string) *AccessTokenClient {
@@ -73,14 +94,32 @@ func (c *AccessTokenClient) SetAgentKey(v string) *AccessTokenClient {
 	return c
 }
 
+func (c *AccessTokenClient) GetAgentKey() string {
+	if c.AgentKey == nil {
+		return ""
+	}
+	return *c.AgentKey
+}
+
 func (c *AccessTokenClient) SetEndpoint(v string) *AccessTokenClient {
 	c.Endpoint = &v
 	return c
 }
 
+func (c *AccessTokenClient) GetEndpoint() string {
+	if c.Endpoint == nil {
+		return ""
+	}
+	return *c.Endpoint
+}
+
 func (c *AccessTokenClient) SetTokenData(tokenData *client.CreateTokenResponseBodyData) *AccessTokenClient {
 	c.TokenData = tokenData
 	return c
+}
+
+func (c *AccessTokenClient) GetTokenData(tokenData *client.CreateTokenResponseBodyData) *client.CreateTokenResponseBodyData {
+	return c.TokenData
 }
 
 func (c *AccessTokenClient) GetToken() (_token string, _err error) {
@@ -125,7 +164,8 @@ func (c *AccessTokenClient) CreateToken() (_result *client.CreateTokenResponseBo
 			requestId = result.Headers["x-acs-request-id"]
 		}
 
-		errMessage := fmt.Sprintf("Failed to create token, reason: %s RequestId: %s", *resultBody.Message, *requestId)
+		errMessage := fmt.Sprintf("Failed to create token, reason: %s RequestId: %s",
+			ToString(resultBody.Message), ToString(requestId))
 		return nil, errors.New(errMessage)
 	}
 
@@ -150,9 +190,23 @@ func (cc *CompletionClient) SetToken(v string) *CompletionClient {
 	return cc
 }
 
+func (cc *CompletionClient) GetToken() string {
+	if cc.Token == nil {
+		return ""
+	}
+	return *cc.Token
+}
+
 func (cc *CompletionClient) SetEndpoint(v string) *CompletionClient {
 	cc.Endpoint = &v
 	return cc
+}
+
+func (cc *CompletionClient) GetEndpoint() string {
+	if cc.Endpoint == nil {
+		return ""
+	}
+	return *cc.Endpoint
 }
 
 type ChatQaMessage struct {
@@ -196,9 +250,23 @@ func (cr *CompletionRequest) SetRequestId(v string) *CompletionRequest {
 	return cr
 }
 
+func (cr *CompletionRequest) GetRequestId() string {
+	if cr.RequestId == nil {
+		return ""
+	}
+	return *cr.RequestId
+}
+
 func (cr *CompletionRequest) SetAppId(v string) *CompletionRequest {
 	cr.AppId = &v
 	return cr
+}
+
+func (cr *CompletionRequest) GetAppId() string {
+	if cr.AppId == nil {
+		return ""
+	}
+	return *cr.AppId
 }
 
 func (cr *CompletionRequest) SetPrompt(v string) *CompletionRequest {
@@ -206,9 +274,23 @@ func (cr *CompletionRequest) SetPrompt(v string) *CompletionRequest {
 	return cr
 }
 
+func (cr *CompletionRequest) GetPrompt() string {
+	if cr.Prompt == nil {
+		return ""
+	}
+	return *cr.Prompt
+}
+
 func (cr *CompletionRequest) SetSessionId(v string) *CompletionRequest {
 	cr.SessionId = &v
 	return cr
+}
+
+func (cr *CompletionRequest) GetSessionId() string {
+	if cr.SessionId == nil {
+		return ""
+	}
+	return *cr.SessionId
 }
 
 func (cr *CompletionRequest) SetTopP(v float32) *CompletionRequest {
@@ -216,9 +298,17 @@ func (cr *CompletionRequest) SetTopP(v float32) *CompletionRequest {
 	return cr
 }
 
+func (cr *CompletionRequest) GetTopP() float32 {
+	return cr.TopP
+}
+
 func (cr *CompletionRequest) SetHasThoughts(v bool) *CompletionRequest {
 	cr.HasThoughts = v
 	return cr
+}
+
+func (cr *CompletionRequest) GetHasThoughts() bool {
+	return cr.HasThoughts
 }
 
 func (cr *CompletionRequest) SetStream(v bool) *CompletionRequest {
@@ -226,9 +316,17 @@ func (cr *CompletionRequest) SetStream(v bool) *CompletionRequest {
 	return cr
 }
 
+func (cr *CompletionRequest) GetStream() bool {
+	return cr.Stream
+}
+
 func (cr *CompletionRequest) SetBizParams(v *map[string]interface{}) *CompletionRequest {
 	cr.BizParams = v
 	return cr
+}
+
+func (cr *CompletionRequest) GetBizParams() *map[string]interface{} {
+	return cr.BizParams
 }
 
 func (cr *CompletionRequest) SetDocReferenceType(v string) *CompletionRequest {
@@ -236,9 +334,20 @@ func (cr *CompletionRequest) SetDocReferenceType(v string) *CompletionRequest {
 	return cr
 }
 
+func (cr *CompletionRequest) GetDocReferenceType() string {
+	if cr.DocReferenceType == nil {
+		return ""
+	}
+	return *cr.DocReferenceType
+}
+
 func (cr *CompletionRequest) SetHistory(v []*ChatQaMessage) *CompletionRequest {
 	cr.History = v
 	return cr
+}
+
+func (cr *CompletionRequest) GetHistory() []*ChatQaMessage {
+	return cr.History
 }
 
 func (cr *CompletionRequest) SetParameters(v *CompletionRequestModelParameter) *CompletionRequest {
@@ -246,9 +355,17 @@ func (cr *CompletionRequest) SetParameters(v *CompletionRequestModelParameter) *
 	return cr
 }
 
+func (cr *CompletionRequest) GetParameters() *CompletionRequestModelParameter {
+	return cr.Parameters
+}
+
 func (cr *CompletionRequest) SetDocTagIds(v []int64) *CompletionRequest {
 	cr.DocTagIds = v
 	return cr
+}
+
+func (cr *CompletionRequest) GetDocTagIds() []int64 {
+	return cr.DocTagIds
 }
 
 type CompletionRequestModelParameter struct {
@@ -270,14 +387,26 @@ func (cp *CompletionRequestModelParameter) SetTopK(v int32) *CompletionRequestMo
 	return cp
 }
 
+func (cp *CompletionRequestModelParameter) GetTopK() int32 {
+	return cp.TopK
+}
+
 func (cp *CompletionRequestModelParameter) SetSeed(v int32) *CompletionRequestModelParameter {
 	cp.Seed = v
 	return cp
 }
 
+func (cp *CompletionRequestModelParameter) GetSeed() int32 {
+	return cp.Seed
+}
+
 func (cp *CompletionRequestModelParameter) SetUseRawPrompt(v bool) *CompletionRequestModelParameter {
 	cp.UseRawPrompt = v
 	return cp
+}
+
+func (cp *CompletionRequestModelParameter) GetUseRawPrompt() bool {
+	return cp.UseRawPrompt
 }
 
 type CompletionResponseDataThought struct {
@@ -299,6 +428,102 @@ func (ct CompletionResponseDataThought) GoString() string {
 	return ct.String()
 }
 
+func (ct *CompletionResponseDataThought) SetThought(v string) *CompletionResponseDataThought {
+	ct.Thought = &v
+	return ct
+}
+
+func (ct *CompletionResponseDataThought) GetThought() string {
+	if ct.Thought == nil {
+		return ""
+	}
+	return *ct.Thought
+}
+
+func (ct *CompletionResponseDataThought) SetActionType(v string) *CompletionResponseDataThought {
+	ct.ActionType = &v
+	return ct
+}
+
+func (ct *CompletionResponseDataThought) GetActionType() string {
+	if ct.ActionType == nil {
+		return ""
+	}
+	return *ct.ActionType
+}
+
+func (cr *CompletionResponseDataThought) SetActionName(v string) *CompletionResponseDataThought {
+	cr.ActionName = &v
+	return cr
+}
+
+func (cr *CompletionResponseDataThought) GetActionName() string {
+	if cr.ActionName == nil {
+		return ""
+	}
+	return *cr.ActionName
+}
+
+func (cr *CompletionResponseDataThought) SetAction(v string) *CompletionResponseDataThought {
+	cr.Action = &v
+	return cr
+}
+
+func (cr *CompletionResponseDataThought) GetAction() string {
+	if cr.Action == nil {
+		return ""
+	}
+	return *cr.Action
+}
+
+func (cr *CompletionResponseDataThought) SetActionInputStream(v string) *CompletionResponseDataThought {
+	cr.ActionInputStream = &v
+	return cr
+}
+
+func (cr *CompletionResponseDataThought) GetActionInputStream() string {
+	if cr.ActionInputStream == nil {
+		return ""
+	}
+	return *cr.ActionInputStream
+}
+
+func (cr *CompletionResponseDataThought) SetActionInput(v string) *CompletionResponseDataThought {
+	cr.ActionInput = &v
+	return cr
+}
+
+func (cr *CompletionResponseDataThought) GetActionInput() string {
+	if cr.ActionInput == nil {
+		return ""
+	}
+	return *cr.ActionInput
+}
+
+func (cr *CompletionResponseDataThought) SetResponse(v string) *CompletionResponseDataThought {
+	cr.Response = &v
+	return cr
+}
+
+func (cr *CompletionResponseDataThought) GetResponse() string {
+	if cr.Response == nil {
+		return ""
+	}
+	return *cr.Response
+}
+
+func (cr *CompletionResponseDataThought) SetObservation(v string) *CompletionResponseDataThought {
+	cr.Observation = &v
+	return cr
+}
+
+func (cr *CompletionResponseDataThought) GetObservation() string {
+	if cr.Observation == nil {
+		return ""
+	}
+	return *cr.Observation
+}
+
 type CompletionResponseDataDocReference struct {
 	IndexId *string `json:"IndexId,omitempty"`
 	Title   *string `json:"Title,omitempty"`
@@ -317,6 +542,90 @@ func (cr CompletionResponseDataDocReference) GoString() string {
 	return cr.String()
 }
 
+func (cr *CompletionResponseDataDocReference) SetIndexId(v string) *CompletionResponseDataDocReference {
+	cr.IndexId = &v
+	return cr
+}
+
+func (cr *CompletionResponseDataDocReference) GetIndexId() string {
+	if cr.IndexId == nil {
+		return ""
+	}
+	return *cr.IndexId
+}
+
+func (cr *CompletionResponseDataDocReference) SetTitle(v string) *CompletionResponseDataDocReference {
+	cr.Title = &v
+	return cr
+}
+
+func (cr *CompletionResponseDataDocReference) GetTitle() string {
+	if cr.Title == nil {
+		return ""
+	}
+	return *cr.Title
+}
+
+func (cr *CompletionResponseDataDocReference) SetDocId(v string) *CompletionResponseDataDocReference {
+	cr.DocId = &v
+	return cr
+}
+
+func (cr *CompletionResponseDataDocReference) GetDocId() string {
+	if cr.DocId == nil {
+		return ""
+	}
+	return *cr.DocId
+}
+
+func (cr *CompletionResponseDataDocReference) SetDocName(v string) *CompletionResponseDataDocReference {
+	cr.DocName = &v
+	return cr
+}
+
+func (cr *CompletionResponseDataDocReference) GetDocName() string {
+	if cr.DocName == nil {
+		return ""
+	}
+	return *cr.DocName
+}
+
+func (cr *CompletionResponseDataDocReference) SetDocUrl(v string) *CompletionResponseDataDocReference {
+	cr.DocUrl = &v
+	return cr
+}
+
+func (cr *CompletionResponseDataDocReference) GetDocUrl() string {
+	if cr.DocUrl == nil {
+		return ""
+	}
+	return *cr.DocUrl
+}
+
+func (cr *CompletionResponseDataDocReference) SetText(v string) *CompletionResponseDataDocReference {
+	cr.Text = &v
+	return cr
+}
+
+func (cr *CompletionResponseDataDocReference) GetText() string {
+	if cr.Text == nil {
+		return ""
+	}
+	return *cr.Text
+}
+
+func (cr *CompletionResponseDataDocReference) SetBizId(v string) *CompletionResponseDataDocReference {
+	cr.BizId = &v
+	return cr
+}
+
+func (cr *CompletionResponseDataDocReference) GetBizId() string {
+	if cr.BizId == nil {
+		return ""
+	}
+	return *cr.BizId
+}
+
 type CompletionResponseData struct {
 	ResponseId    *string                               `json:"ResponseId"`
 	SessionId     *string                               `json:"SessionId,omitempty"`
@@ -331,6 +640,60 @@ func (cd CompletionResponseData) String() string {
 
 func (cd CompletionResponseData) GoString() string {
 	return cd.String()
+}
+
+func (cd *CompletionResponseData) SetResponseId(v string) *CompletionResponseData {
+	cd.ResponseId = &v
+	return cd
+}
+
+func (cd *CompletionResponseData) GetResponseId() string {
+	if cd.ResponseId == nil {
+		return ""
+	}
+	return *cd.ResponseId
+}
+
+func (cd *CompletionResponseData) SetSessionId(v string) *CompletionResponseData {
+	cd.SessionId = &v
+	return cd
+}
+
+func (cd *CompletionResponseData) GetSessionId() string {
+	if cd.SessionId == nil {
+		return ""
+	}
+	return *cd.SessionId
+}
+
+func (cd *CompletionResponseData) SetText(v string) *CompletionResponseData {
+	cd.Text = &v
+	return cd
+}
+
+func (cd *CompletionResponseData) GetText() string {
+	if cd.Text == nil {
+		return ""
+	}
+	return *cd.Text
+}
+
+func (cd *CompletionResponseData) SetThoughts(v []*CompletionResponseDataThought) *CompletionResponseData {
+	cd.Thoughts = v
+	return cd
+}
+
+func (cd *CompletionResponseData) GetThoughts() []*CompletionResponseDataThought {
+	return cd.Thoughts
+}
+
+func (cd *CompletionResponseData) SetDocReferences(v []*CompletionResponseDataDocReference) *CompletionResponseData {
+	cd.DocReferences = v
+	return cd
+}
+
+func (cd *CompletionResponseData) GetDocReferences() []*CompletionResponseDataDocReference {
+	return cd.DocReferences
 }
 
 type CompletionResponse struct {
@@ -349,6 +712,60 @@ func (cr CompletionResponse) GoString() string {
 	return cr.String()
 }
 
+func (cr *CompletionResponse) SetSuccess(v bool) *CompletionResponse {
+	cr.Success = v
+	return cr
+}
+
+func (cr *CompletionResponse) GetSuccess() bool {
+	return cr.Success
+}
+
+func (cr *CompletionResponse) SetCode(v string) *CompletionResponse {
+	cr.Code = &v
+	return cr
+}
+
+func (cr *CompletionResponse) GetCode() string {
+	if cr.Code == nil {
+		return ""
+	}
+	return *cr.Code
+}
+
+func (cr *CompletionResponse) SetMessage(v string) *CompletionResponse {
+	cr.Message = &v
+	return cr
+}
+
+func (cr *CompletionResponse) GetMessage() string {
+	if cr.Message == nil {
+		return ""
+	}
+	return *cr.Message
+}
+
+func (cr *CompletionResponse) SetRequestId(v string) *CompletionResponse {
+	cr.RequestId = &v
+	return cr
+}
+
+func (cr *CompletionResponse) GetRequestId() string {
+	if cr.RequestId == nil {
+		return ""
+	}
+	return *cr.RequestId
+}
+
+func (cr *CompletionResponse) SetData(v *CompletionResponseData) *CompletionResponse {
+	cr.Data = v
+	return cr
+}
+
+func (cr *CompletionResponse) GetData() *CompletionResponseData {
+	return cr.Data
+}
+
 func (cc *CompletionClient) CreateCompletion(request *CompletionRequest) (_response *CompletionResponse, _err error) {
 	req, err := cc.CreateCompletionRequest(request, false)
 	if err != nil {
@@ -363,7 +780,7 @@ func (cc *CompletionClient) CreateCompletion(request *CompletionRequest) (_respo
 		return nil, err
 	}
 
-	body, err := ioutil.ReadAll(resp.Body)
+	body, err := io.ReadAll(resp.Body)
 	if err != nil {
 		return nil, err
 	}
@@ -430,7 +847,7 @@ func (cc *CompletionClient) CreateCompletionRequest(request *CompletionRequest, 
 		request.Stream = stream
 	}
 
-	url := fmt.Sprintf("%s/v2/app/completions", *cc.Endpoint)
+	url := fmt.Sprintf("%s/v2/app/completions", ToString(cc.Endpoint))
 	data, err := json.Marshal(*request)
 	if err != nil {
 		return nil, err
@@ -441,7 +858,7 @@ func (cc *CompletionClient) CreateCompletionRequest(request *CompletionRequest, 
 		return nil, err
 	}
 
-	authorization := fmt.Sprintf("Bearer %s", *cc.Token)
+	authorization := fmt.Sprintf("Bearer %s", ToString(cc.Token))
 
 	req.Header.Set("Content-Type", "application/json; charset=utf-8")
 	req.Header.Set("Authorization", authorization)
