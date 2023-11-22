@@ -21,6 +21,7 @@ import (
 	"os"
 	"strings"
 	"testing"
+	"time"
 )
 
 func TestCreateCompletion(t *testing.T) {
@@ -57,7 +58,7 @@ func TestCreateCompletion(t *testing.T) {
 		return
 	}
 
-	t.Logf("requestId: %s, text : %s\n", *response.RequestId, *response.Data.Text)
+	t.Logf("requestId: %s, text : %s\n", response.GetRequestId(), response.GetData().GetText())
 }
 
 func TestCreateStreamCompletion(t *testing.T) {
@@ -114,6 +115,10 @@ func TestCreateCompletionWithParams(t *testing.T) {
 	}
 
 	cc := client.CompletionClient{Token: &token}
+
+	//设置超时时间
+	cc.SetTimeout(30 * time.Second)
+
 	prompt := "云南近5年GNP总和是多少"
 
 	request := &client.CompletionRequest{}
@@ -197,7 +202,7 @@ func TestCreateToken(t *testing.T) {
 	accessKeyId := os.Getenv("ACCESS_KEY_ID")
 	accessKeySecret := os.Getenv("ACCESS_KEY_SECRET")
 	agentKey := os.Getenv("AGENT_KEY")
-	endpoint := "bailian.cn-beijing.aliyuncs.com"
+	endpoint := client.BroadscopeBailianPopEndpoint
 
 	config := &openapi.Config{AccessKeyId: &accessKeyId,
 		AccessKeySecret: &accessKeySecret,

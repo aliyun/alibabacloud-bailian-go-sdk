@@ -175,6 +175,7 @@ func (c *AccessTokenClient) CreateToken() (_result *client.CreateTokenResponseBo
 type CompletionClient struct {
 	Token    *string
 	Endpoint *string
+	Timeout  time.Duration
 }
 
 func (cc CompletionClient) String() string {
@@ -207,6 +208,15 @@ func (cc *CompletionClient) GetEndpoint() string {
 		return ""
 	}
 	return *cc.Endpoint
+}
+
+func (cc *CompletionClient) SetTimeout(v time.Duration) *CompletionClient {
+	cc.Timeout = v
+	return cc
+}
+
+func (cc *CompletionClient) GetTimeout() time.Duration {
+	return cc.Timeout
 }
 
 type ChatQaMessage struct {
@@ -772,8 +782,12 @@ func (cc *CompletionClient) CreateCompletion(request *CompletionRequest) (_respo
 		return nil, err
 	}
 
-	httpClient := &http.Client{}
+	httpClient := &http.Client{Timeout: cc.Timeout}
 	resp, err := httpClient.Do(req)
+	if err != nil {
+		return nil, err
+	}
+
 	defer resp.Body.Close()
 
 	if err != nil {
