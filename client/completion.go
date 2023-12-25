@@ -379,9 +379,11 @@ func (cr *CompletionRequest) GetDocTagIds() []int64 {
 }
 
 type CompletionRequestModelParameter struct {
-	TopK         int32 `json:"TopK,omitempty"`
-	Seed         int32 `json:"Seed,omitempty"`
-	UseRawPrompt bool  `json:"UseRawPrompt,omitempty"`
+	TopK         int32   `json:"TopK,omitempty"`
+	Seed         int32   `json:"Seed,omitempty"`
+	UseRawPrompt bool    `json:"UseRawPrompt,omitempty"`
+	Temperature  float32 `json:"Temperature,omitempty"`
+	MaxTokens    int32   `json:"MaxTokens,omitempty"`
 }
 
 func (cp CompletionRequestModelParameter) String() string {
@@ -417,6 +419,24 @@ func (cp *CompletionRequestModelParameter) SetUseRawPrompt(v bool) *CompletionRe
 
 func (cp *CompletionRequestModelParameter) GetUseRawPrompt() bool {
 	return cp.UseRawPrompt
+}
+
+func (cp *CompletionRequestModelParameter) SetTemperature(v float32) *CompletionRequestModelParameter {
+	cp.Temperature = v
+	return cp
+}
+
+func (cp *CompletionRequestModelParameter) GetTemperature() float32 {
+	return cp.Temperature
+}
+
+func (cp *CompletionRequestModelParameter) SetMaxTokens(v int32) *CompletionRequestModelParameter {
+	cp.MaxTokens = v
+	return cp
+}
+
+func (cp *CompletionRequestModelParameter) GetMaxTokens() int32 {
+	return cp.MaxTokens
 }
 
 type CompletionResponseDataThought struct {
@@ -636,12 +656,44 @@ func (cr *CompletionResponseDataDocReference) GetBizId() string {
 	return *cr.BizId
 }
 
+type CompletionResponseDataUsage struct {
+	InputTokens  int32 `json:"InputTokens"`
+	OutputTokens int32 `json:"OutputTokens"`
+}
+
+func (cu CompletionResponseDataUsage) String() string {
+	return tea.Prettify(cu)
+}
+
+func (cu CompletionResponseDataUsage) GoString() string {
+	return cu.String()
+}
+
+func (cu *CompletionResponseDataUsage) SetInputTokens(v int32) *CompletionResponseDataUsage {
+	cu.InputTokens = v
+	return cu
+}
+
+func (cu *CompletionResponseDataUsage) GetInputTokens() int32 {
+	return cu.InputTokens
+}
+
+func (cu *CompletionResponseDataUsage) SetOutputTokens(v int32) *CompletionResponseDataUsage {
+	cu.OutputTokens = v
+	return cu
+}
+
+func (cu *CompletionResponseDataUsage) GetOutputTokens() int32 {
+	return cu.OutputTokens
+}
+
 type CompletionResponseData struct {
 	ResponseId    *string                               `json:"ResponseId"`
 	SessionId     *string                               `json:"SessionId,omitempty"`
 	Text          *string                               `json:"Text,omitempty"`
 	Thoughts      []*CompletionResponseDataThought      `json:"Thoughts,omitempty"`
 	DocReferences []*CompletionResponseDataDocReference `json:"DocReferences,omitempty"`
+	Usage         []*CompletionResponseDataUsage        `json:"Usage,omitempty"`
 }
 
 func (cd CompletionResponseData) String() string {
@@ -704,6 +756,15 @@ func (cd *CompletionResponseData) SetDocReferences(v []*CompletionResponseDataDo
 
 func (cd *CompletionResponseData) GetDocReferences() []*CompletionResponseDataDocReference {
 	return cd.DocReferences
+}
+
+func (cd *CompletionResponseData) SetUsage(v []*CompletionResponseDataUsage) *CompletionResponseData {
+	cd.Usage = v
+	return cd
+}
+
+func (cd *CompletionResponseData) GetUsage() []*CompletionResponseDataUsage {
+	return cd.Usage
 }
 
 type CompletionResponse struct {

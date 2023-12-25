@@ -58,7 +58,11 @@ func TestCreateCompletion(t *testing.T) {
 		return
 	}
 
-	t.Logf("requestId: %s, text : %s\n", response.GetRequestId(), response.GetData().GetText())
+	t.Logf("requestId: %s, text : %s", response.GetRequestId(), response.GetData().GetText())
+	if response.GetData().GetUsage() != nil && len(response.GetData().GetUsage()) > 0 {
+		usage := response.GetData().GetUsage()[0]
+		t.Logf(", inputTokens: %d, outputTokens: %d\n", usage.GetInputTokens(), usage.GetOutputTokens())
+	}
 }
 
 func TestCreateStreamCompletion(t *testing.T) {
@@ -138,8 +142,18 @@ func TestCreateCompletionWithParams(t *testing.T) {
 	chatHistory := []*client.ChatQaMessage{message1, message2}
 	request.SetHistory(chatHistory)
 
-	//设置模型参数topK，seed
-	modelParameter := &client.CompletionRequestModelParameter{TopK: 50, Seed: 2222, UseRawPrompt: true}
+	//设置模型参数topK，seed, temperature和max tokens
+	modelParameter := &client.CompletionRequestModelParameter{}
+	//设置模型参数topK
+	modelParameter.SetTopK(50)
+	//设置模型参数seed
+	modelParameter.SetSeed(2222)
+	//设置模型参数temperature
+	modelParameter.SetTemperature(0.3)
+	//设置模型参数max tokens
+	modelParameter.SetMaxTokens(20)
+	//是否使用原始prompt
+	modelParameter.SetUseRawPrompt(true)
 	request.SetParameters(modelParameter)
 
 	//设置文档标签tagId，设置后，文档检索召回时，仅从tagIds对应的文档范围进行召回
